@@ -1,0 +1,41 @@
+version: "3.1"
+
+services:
+  app:
+    depends_on:
+      - db
+    build: .
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - API_URL=http://localhost:3000/api
+      - DATABASE_URL=${DATABASE_URL}
+      - PG_HOST=db
+      - PG_DB_NAME=movies_recommendation
+      - PG_USERNAME=${PG_USERNAME}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+    command: ./docker-entrypoint-dev.sh
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:16.0-alpine3.18
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - dev_movies_recommendation:/var/lib/postgresql/data
+    environment:
+      - PG_HOST=localhost
+      - PG_DB_NAME=movies_recommendation
+      - PG_USERNAME=${PG_USERNAME}
+      - PG_PASSWORD=${PG_PASSWORD}
+
+volumes:
+  dev_movies_recommendation:
