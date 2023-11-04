@@ -20,6 +20,8 @@ services:
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - IAM_USER_KEY=${IAM_USER_KEY}
+      - IAM_USER_SECRET=${IAM_USER_SECRET}
     command: ./docker-entrypoint-dev.sh
     volumes:
       - .:/app
