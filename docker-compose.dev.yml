@@ -1,10 +1,10 @@
-version: "3.1"
+version: "3.8"
 
 services:
-  app:
+  nextapp:
     depends_on:
       - db
-    build: .
+    build: ./movies-recommendation
     ports:
       - 3000:3000
     restart: unless-stopped
@@ -14,8 +14,8 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - PG_HOST=db
       - PG_DB_NAME=movies_recommendation
-      - PG_USERNAME=${PG_USERNAME}
-      - PG_PASSWORD=${PG_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - NEXTAUTH_URL=http://localhost:3000
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
@@ -24,7 +24,7 @@ services:
       - IAM_USER_SECRET=${IAM_USER_SECRET}
     command: ./docker-entrypoint-dev.sh
     volumes:
-      - .:/app
+      - ./movies-recommendation:/app
 
   db:
     image: postgres:16.0-alpine3.18
@@ -32,12 +32,10 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - dev_movies_recommendation:/var/lib/postgresql/data
+      - movies-recommendation:/var/lib/postgresql/data
     environment:
-      - PG_HOST=localhost
-      - PG_DB_NAME=movies_recommendation
-      - PG_USERNAME=${PG_USERNAME}
-      - PG_PASSWORD=${PG_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
 volumes:
-  dev_movies_recommendation:
+  movies-recommendation:

@@ -16,7 +16,7 @@ const FilmsScrollContainer = ({ category }: { category: Categories }) => {
                 key={film.id}
                 className="flex-shrink-0 scroll-snap-align-start"
               >
-                <Link href={`/film-detail/${film.id}`}>
+                <Link href={`/film-detail/${film.film.id}`}>
                   <img
                     src={film.film.image}
                     alt={film.film.name}

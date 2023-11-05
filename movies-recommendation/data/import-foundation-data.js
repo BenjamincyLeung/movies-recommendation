@@ -9,11 +9,17 @@ dotenv.config();
 async function main() {
   try {
     await pgClient.connect();
-    await pgClient.query(/*sql*/ `DELETE FROM film_Categories`);
-    // await pgClient.query(/*sql*/ `DELETE FROM ratings`);
-    await pgClient.query(/*sql*/ `DELETE FROM categories`);
-    await pgClient.query(/*sql*/ `DELETE FROM films`);
-    await pgClient.query(/*sql*/ `DELETE FROM users`);
+
+    // Check
+
+    const filmsQuery = await pgClient.query(/*sql*/ `SELECT * FROM films`);
+
+    if (filmsQuery.rowCount > 0) {
+      console.log(
+        'Films Data has already seeded. If you want to seed only the rating data, please run "npm run rating-data-init".'
+      );
+      return;
+    }
 
     const categpryDataArr = JSON.parse(
       fs.readFileSync("./data/categories.json")

@@ -22,8 +22,6 @@ async function importRatingToPg(pgClient) {
     const ratingData = JSON.parse(response);
     console.log(`Fetched rating Data, data rows: ${ratingData.length}`);
 
-    await pgClient.query(/*sql*/ `DELETE FROM ratings`);
-
     const filmsQuery = await pgClient.query(
       /*sql*/ `SELECT name,id from films`
     );
