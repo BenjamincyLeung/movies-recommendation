@@ -1,19 +1,45 @@
 import React from "react";
 import FilmsScrollContainer from "@/app/components/FilmsScrollContainer";
-import { Films, Categories } from "../../model";
+import { Film, Category } from "../../model";
+
+interface FilmsFromFlask {
+  Distance: number;
+  Title: string;
+  film_id: number;
+  image: string;
+}
 
 interface Props {
   params: { id: string };
 }
 
 const API_URL = process.env.API_URL;
+const FLASK_API_URL = process.env.FLASK_API_URL;
 
 const FilmDetails = async ({ params: { id } }: Props) => {
-  const res = await fetch(`${API_URL}/getFilm/${parseInt(id)}`);
-  const filmDeatil: Films = await res.json();
+  const resFilmDetail = await fetch(`${API_URL}/getFilm/${parseInt(id)}`);
+  const filmDeatil: Film = await resFilmDetail.json();
 
-  const res2 = await fetch(`${API_URL}/getFilm`);
-  const categories: Categories[] = await res2.json();
+  const resFilmRecommendation = await fetch(
+    `${FLASK_API_URL}/recommendation/${parseInt(id)}`
+  );
+
+  const filmsFromFlask: FilmsFromFlask[] = await resFilmRecommendation.json();
+
+  const category: Category = {
+    category: "Others also like theese movies",
+    films: [],
+  };
+
+  for (const filmFromFlask of filmsFromFlask) {
+    category.films.push({
+      film: {
+        id: filmFromFlask.film_id.toString(),
+        name: filmFromFlask.Title,
+        image: filmFromFlask.image,
+      },
+    });
+  }
 
   return (
     <div className="text-white p-4">
@@ -49,14 +75,14 @@ const FilmDetails = async ({ params: { id } }: Props) => {
             <p>{filmDeatil.overview}</p>
             <p className="mt-5">
               Release Date:{" "}
-              {filmDeatil.release_date.replace("T00:00:00.000Z", "")}
+              {filmDeatil.release_date!.replace("T00:00:00.000Z", "")}
             </p>
           </div>
         </div>
         {/* Add more film description content here */}
       </div>
 
-      <FilmsScrollContainer category={categories[0]} />
+      <FilmsScrollContainer category={category} />
     </div>
   );
 };

@@ -1,21 +1,26 @@
-export interface Categories {
-  id: string;
+export interface Category {
+  id?: string;
   category: string;
-  films: FilmCategories[];
+  films: FilmCategory[];
 }
 
-export interface FilmCategories {
-  id: string;
-  film_id: string;
-  category_id: string;
-  film: Films;
+export interface FilmCategory {
+  id?: string;
+  film_id?: string;
+  category_id?: string;
+  film?: Film;
 }
 
-export interface Films {
+export interface Film {
   id: string;
   name: string;
   image: string;
-  adult: boolean;
-  overview: string;
-  release_date: string;
+  adult?: boolean;
+  overview?: string;
+  release_date?: string;
+}
+
+export interface FilmsOfCategory {
+  category: string;
+  films: Film[];
 }

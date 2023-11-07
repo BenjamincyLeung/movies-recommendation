@@ -6,7 +6,13 @@ export async function GET(request: NextRequest) {
     include: {
       films: {
         select: {
-          film: true,
+          film: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
         },
       },
     },

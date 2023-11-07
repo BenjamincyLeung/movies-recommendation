@@ -1,11 +1,11 @@
-import { Categories } from "./model";
+import { Category } from "./model";
 import FilmsScrollContainer from "./components/FilmsScrollContainer";
 
 const API_URL = process.env.API_URL;
 
 export default async function Home() {
   const res = await fetch(`${API_URL}/getFilm`);
-  const categories: Categories[] = await res.json();
+  const categories: Category[] = await res.json();
 
   return (
     <div className="flex flex-col items-center space-y-6">

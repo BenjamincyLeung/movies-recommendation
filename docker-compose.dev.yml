@@ -1,6 +1,23 @@
 version: "3.8"
 
 services:
+  python-ml-app:
+    depends_on:
+      - nextapp
+    build: ./machine-learning
+    ports:
+      - 5001:5000
+    restart: unless-stopped
+    environment:
+      - PG_HOST=db
+      - PG_DB_NAME=movies_recommendation
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - FLASK_APP=app.py
+    volumes:
+      - ./machine-learning:/app
+    command: flask run --host 0.0.0.0
+
   nextapp:
     depends_on:
       - db
@@ -11,6 +28,7 @@ services:
     environment:
       - NODE_ENV=development
       - API_URL=http://localhost:3000/api
+      - FLASK_API_URL=http://python-ml-app:5000/api
       - DATABASE_URL=${DATABASE_URL}
       - PG_HOST=db
       - PG_DB_NAME=movies_recommendation

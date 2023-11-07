@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "./Link";
-import { Categories } from "../model";
+import { Category } from "../model";
 
-const FilmsScrollContainer = ({ category }: { category: Categories }) => {
+const FilmsScrollContainer = ({ category }: { category: Category }) => {
   return (
     <>
       <div className="w-full max-w-screen-xl">
