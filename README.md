@@ -28,4 +28,4 @@ http://localhost:3000
 http://localhost:3000/api
 
 ## Flask api URL
-http://python-ml-app:5001/api
+http://localhos:5001/api
